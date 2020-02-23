@@ -1,38 +1,147 @@
-.App {
+@import url('https://fonts.googleapis.com/css?family=Dosis|Open+Sans&display=swap');
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.AppContainer {
+  background-color: black;
+  background: url("coronavirus-artwork.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-right: 20px 0px 20px 20px;
+  background-position: 50% 0%;
+  color: white;
+  width: 100vw;
+  height: 100vh;
+
+  font-family: "Dosis", sans-serif;
+  font-size: 16px;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100vw;
+  height: 100vh;
+}
+
+.container {
+  width: inherit;
+  height: inherit;
+
+  display: grid;
+  grid-template-rows: 70px 1fr;
+  grid-template-columns: 1fr 250px;
+  grid-column-gap: 10px;
+  grid-template-areas: "header header"
+                       "content right"
+                       "footer footer";
+  
+  animation: fadein 2s;
+}
+
+h2 {
+  font-size: 2em;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin: 0;
+  padding: 0;
+}
+
+.cases , .discharged, .treatment, .deaths {
+  text-transform: uppercase;
+}
+
+.date {
+  margin-bottom: 20px;
+}
+
+.cases {
+  text-transform: uppercase;
+  color: #b2dbd4;
+}
+
+.discharged {
+  color: #42ff75;
+}
+
+.treatment {
+  color: #ff3b3b;
+}
+
+.header {
+  grid-area: header;
+  text-align: right;
+  font-family: "Open Sans", sans-serif;
+}
+
+.footer {
+  grid-area: footer;
+  padding: 20px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.left {
+  grid-area: left;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.right {
+  grid-area: right;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.sgp-map {
+  transform: translate(0, -25px);
+}
+
+/* tooltip */
+.tooltip {
+  background-color: #465c59;
+  color: white;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+}
+
+.circle:hover {
+  fill: #465c59;
+  stroke: #b2dbd4;
+}
+
+.tooltip_text {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+/* nationality tally */
+.nationalityTallyContainer {
+  margin: 30px 0px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.tallyItem {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* loading */
+.loadingContainer {
+  display: flex;
+  width: inherit;
+  height: inherit;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  text-align: center;
 }
