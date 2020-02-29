@@ -1,5 +1,5 @@
 import React from "react";
-import { getNationalitySummary } from "../data/getData";
+import { getNationalitySummary } from "../helpers/getData";
 
 const NationalityTally = ({ data }) => {
     const summary = getNationalitySummary(data);

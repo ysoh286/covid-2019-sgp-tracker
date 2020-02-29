@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as d3 from "d3";
 import Tooltip from "./Tooltip.jsx";
-import { getClusterLocations, checkDischarge } from "../data/getData";
+import { getClusterLocations, checkDischarge } from "../helpers/getData";
 
 const geoJSON = require("../data/national-map-polygon-geojson.json");
 

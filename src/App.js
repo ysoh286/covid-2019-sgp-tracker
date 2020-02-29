@@ -6,7 +6,7 @@ import Map from "./components/Map";
 
 import * as d3 from "d3";
 import csvData from "./data/ncovid-2019-sgp.csv";
-import { processData, getNumberOfCases, getNumberOfDischarged, getDatesAndDuration } from "./data/getData";
+import { processData, getNumberOfCases, getNumberOfDischarged, getDatesAndDuration } from "./helpers/getData";
 import NationalityTally from './components/NationalityTally';
 import LoadingWrapper from "./components/LoadingWrapper";
 import AgeBars from './components/AgeBars';

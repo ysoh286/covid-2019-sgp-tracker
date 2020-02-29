@@ -1,5 +1,5 @@
 import React from "react";
-import { groupDataByAge } from "../data/getData";
+import { groupDataByAge } from "../helpers/getData";
 
 // ages bars that show which ones
 const AgeBars = ({ data }) => {
