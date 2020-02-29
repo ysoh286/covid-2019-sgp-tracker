@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8e4bfd588f199e417e06cbe4d6bffa6f",
+    "revision": "9591a7be961f4f10e8137f7ef59bf768",
     "url": "/ncovid-2019-sgp-tracker/index.html"
   },
   {
-    "revision": "fc530c45b1f1ec9d83cf",
+    "revision": "0b0b8dcf296e1ce00a45",
     "url": "/ncovid-2019-sgp-tracker/static/css/main.e832d33b.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ncovid-2019-sgp-tracker/static/js/2.bb695523.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "fc530c45b1f1ec9d83cf",
-    "url": "/ncovid-2019-sgp-tracker/static/js/main.2f6bbcdf.chunk.js"
+    "revision": "0b0b8dcf296e1ce00a45",
+    "url": "/ncovid-2019-sgp-tracker/static/js/main.1ee68b01.chunk.js"
   },
   {
     "revision": "1c69dc134d23c58dce77",
