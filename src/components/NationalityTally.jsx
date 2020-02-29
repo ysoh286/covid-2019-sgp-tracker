@@ -3,8 +3,6 @@ import { getNationalitySummary } from "../data/getData";
 
 const NationalityTally = ({ data }) => {
     const summary = getNationalitySummary(data);
-    console.log("summary", summary);
-
     return (
         <div className={"nationalityTallyContainer"}>
             {summary.map(s => <div className={"tallyItem"} key={s.key}>
