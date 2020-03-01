@@ -33,7 +33,7 @@ const App = () => {
     });
   }, []);
 
-  const { firstDate, lastDate,
+  const { firstDate, lastDate, days,
     // milliseconds 
   } = getDatesAndDuration(data);
 
@@ -95,13 +95,19 @@ const App = () => {
             </div>
             <div className={"content"}>
               <Map data={filteredData} />
-              <input className={"dateSlider"}
-                type="range"
-                onChange={onChangeSlider}
-                min={firstDate}
-                max={lastDate}
-                value={date} />
-              <div className={"dateSliderTicks"}>
+              <div className="dateSliderGroup">
+                <input className={"dateSlider"}
+                  type="range"
+                  onChange={onChangeSlider}
+                  min={firstDate}
+                  max={lastDate}
+                  value={date} />
+                <div className={"dateSliderTicks"} style={{ gridTemplateColumns: `repeat(${days}, 1fr)` }}>
+                  {
+                    [...new Array(days)].map((d, i) => <div key={`day_${i}`} className={"dayTicks"}>
+                    </div>)
+                  }
+                </div>
               </div>
               {/* <div className="playButton" onClick={onPlay}>
                 &#9654;
