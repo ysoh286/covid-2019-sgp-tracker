@@ -15,6 +15,10 @@ const title = "NCOVID-2019 - SGP";
 
 const App = () => {
 
+  // const [progress, reset] = useAnimation(1000);
+  // const [anim, setAnim] = useState(false);
+  // const [startTime, setStartTime] = useState(Date.now());
+
   // set data to render
   const [data, setData] = useState([]);
   // set date to show (cumulative)
@@ -29,14 +33,48 @@ const App = () => {
     });
   }, []);
 
+  const { firstDate, lastDate,
+    // milliseconds 
+  } = getDatesAndDuration(data);
+
+  // useEffect(() => {
+  //   let queuedFrame;
+  //   const frame = () => {
+  //     const now = Date.now() - startTime;
+  //     // if the dates is less than the last date, then keep moving forward
+  //     if (now <= milliseconds && anim) {
+  //       queuedFrame = requestAnimationFrame(frame);
+  //     }
+  //     console.log("now", now);
+  //     setDate(parseInt(date) + now * 50000);
+
+  //     if (date + now * 50000 >= lastDate) {
+  //       cancelAnimationFrame(queuedFrame);
+  //       setAnim(false);
+  //     }
+  //     // setAnim(now < milliseconds);
+  //   };
+  //   frame();
+
+  //   return () => cancelAnimationFrame(queuedFrame);
+  // }, [anim]);
+
+  // const onPlay = () => {
+  //   if (date >= lastDate) {
+  //     setDate(firstDate);
+
+  //   }
+  //   setStartTime(Date.now());
+  //   // start animation
+  //   setAnim(!anim);
+  // }
+
+  // const reset = () => setAnim(false);
+
   if (data.length === 0) return <div className={"AppContainer"}>LOADING...</div>;
-
-
-  const { firstDate, lastDate } = getDatesAndDuration(data);
 
   // filter data by latest date
   const filteredData = data.filter(d => DateTime.fromISO(d.confirmedDate).toMillis() <= date);
-
 
   const discharged = getNumberOfDischarged(filteredData);
   const cases = getNumberOfCases(filteredData);
@@ -65,22 +103,26 @@ const App = () => {
                 value={date} />
               <div className={"dateSliderTicks"}>
               </div>
-              <div>
-                Points on the map are rough estimates of locations and may not be exact. <br />
-                Points that do not have a place of stay / or unknown are located on the top left.
-              </div>
+              {/* <div className="playButton" onClick={onPlay}>
+                &#9654;
+              </div> */}
             </div>
             <div className={"right"}>
-              <h2 className={"date"}>{DateTime.fromISO(filteredData[filteredData.length - 1].confirmedDate).toFormat("dd MMM yy")}</h2>
-              <h3 className={"cases"}>Cases: {cases}</h3>
-              <h3 className={"treatment"}>In treatment: {cases - discharged}</h3>
-              <h3 className={"discharged"}>Discharged: {discharged}</h3>
-              <h3 className="deaths">Deaths: 0</h3>
-
+              <div className="caseText">
+                <h2 className={"date"}>{DateTime.fromISO(filteredData[filteredData.length - 1].confirmedDate).toFormat("dd MMM yy")}</h2>
+                <h3 className={"cases"}>Cases: {cases}</h3>
+                <h3 className={"treatment"}>In treatment: {cases - discharged}</h3>
+                <h3 className={"discharged"}>Discharged: {discharged}</h3>
+                <h3 className="deaths">Deaths: 0</h3>
+              </div>
               <NationalityTally data={filteredData} />
               <AgeBars data={filteredData} />
             </div>
             <div className={"footer"}>
+              <div>
+                Points on the map are rough estimates of locations and may not be exact. <br />
+                Points that do not have a place of stay / or unknown are located on the top left.
+              </div>
               This is still under construction / a work in progress.
               Created by a concerned human.
               Sources come from Wikipedia, background picture comes from

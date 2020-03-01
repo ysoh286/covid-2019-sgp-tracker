@@ -62,9 +62,9 @@ h3 {
   text-transform: uppercase;
 }
 
-.date {
+/* .date {
   margin-bottom: 20px;
-}
+} */
 
 .cases {
   text-transform: uppercase;
@@ -90,15 +90,16 @@ h3 {
   grid-area: footer;
   padding: 20px;
   text-align: center;
+  font-size: 0.75em;
 }
 
-.left {
-  grid-area: left;
+.content {
+  grid-area: content;
 }
 
 .right {
   grid-area: right;
-  padding-right: 20px;
+  padding: 0 20px;
 }
 
 .sgp-map {
@@ -146,10 +147,15 @@ h3 {
   grid-template-columns: 50px 1fr;
 }
 
+.barGroup {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .ageBar {
   height: 18px;
-  margin-bottom: 2px;
-  background-color: #b2dbd4;
+  border: 1px solid black;
 }
 
 /* loading */
@@ -168,7 +174,7 @@ h3 {
      -moz-appearance: none;
           appearance: none;
   outline: none;
-  width: 100%;
+  width: 80%;
   height: 0.3em;
   border-radius: 0.3em;
   background-color: #b2dbd4;
@@ -208,4 +214,38 @@ h3 {
 
 a:link {
   color: white;
+}
+
+/* media query for flexing */
+@media only screen and (max-width: 800px) {
+  .container {
+    width: inherit;
+    height: fit-content;
+  
+    display: grid;
+    /* grid-template-rows: 70px 1fr 100px;
+    grid-template-columns: 1fr 250px; */
+    grid-template-rows: 70px 1fr 1fr 250px;
+    grid-template-columns: auto;
+    grid-column-gap: 20px;
+    grid-template-areas: "header"
+                         "content" 
+                         "right"
+                         "footer";
+    
+    animation: fadein 2s;
+  }
+  
+  .caseText {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: baseline;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .nationalityTallyContainer {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
 }

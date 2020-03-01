@@ -27,7 +27,10 @@ const splitCoordinates = (coordinates) => {
 const getNumberOfCases = (data) => data.length;
 
 // get number of cases discharged / recovered
-const getNumberOfDischarged = (data) => data.filter(d => d.DISCHARGE_DATE).length;
+const getNumberOfDischarged = (data) => {
+    const latest = data[data.length - 1].confirmedDate;
+    return data.filter(d => checkDischarge(d, latest)).length;
+}
 
 // get the breakdown by nationality
 const getNationalitySummary = (data) => {
@@ -95,6 +98,8 @@ const getCountryCode = (country) => {
 
 // calcualte number of days from patient zero
 const getDatesAndDuration = (data) => {
+
+    if (data.length === 0) return { days: 1, milliseconds: 10000, firstDate: null, lastDate: null };
     const firstDate = DateTime.fromISO(data[0].confirmedDate);
     const lastDate = DateTime.fromISO(data[data.length - 1].confirmedDate);
 
@@ -112,14 +117,9 @@ const getDatesAndDuration = (data) => {
 const groupDataByAge = (data) => {
     const AGE_GROUP_BRACKETS = [
         {
-            label: "90 +",
-            min: 90,
-            max: 100
-        },
-        {
-            label: "80 - 89",
+            label: "80 +",
             min: 80,
-            max: 89,
+            max: 100
         },
         {
             label: "70 - 79",
@@ -161,17 +161,18 @@ const groupDataByAge = (data) => {
     const dataByAge = AGE_GROUP_BRACKETS.map(ageGroup => {
         const { min, max } = ageGroup;
         const dataInGroup = data.filter(d => d.age >= min && d.age <= max);
+        const latestDate = data[data.length - 1].confirmedDate;
         return {
             ...ageGroup,
             count: dataInGroup.length,
             genderSplit: {
-                female: dataInGroup.filter(d => d.gender === "Female"),
-                male: dataInGroup.filter(d => d.gender === "Male"),
-                other: dataInGroup.filter(d => d.gender !== "Female" && d.gender !== "Male"),
+                female: dataInGroup.filter(d => d.GENDER === "Female"),
+                male: dataInGroup.filter(d => d.GENDER === "Male"),
+                other: dataInGroup.filter(d => d.GENDER !== "Female" && d.GENDER !== "Male"),
             },
             treatmentSplit: {
-                discharged: dataInGroup.filter(d => d.dischargeDate).length,
-                treatment: dataInGroup.filter(d => !d.dischargeDate).length,
+                discharged: dataInGroup.filter(d => checkDischarge(d, latestDate)).length,
+                treatment: dataInGroup.filter(d => !checkDischarge(d, latestDate)).length,
             },
         };
     });

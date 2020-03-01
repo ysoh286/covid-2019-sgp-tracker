@@ -8,7 +8,7 @@ const geoJSON = require("../data/national-map-polygon-geojson.json");
 const WIDTH = 700;
 const HEIGHT = 450;
 
-const COLOURS = {
+export const COLOURS = {
     discharged: "#37db63",
     treated: "#ff3b3b",
     dead: "black",
@@ -111,14 +111,14 @@ const Map = ({ data }) => {
                 .attr("cx", d => projection([d.long, d.lat])[0] + Math.random() * 3 || 10)
                 .attr("cy", d => projection([d.long, d.lat])[1] + Math.random() * 3 || 10)
                 .transition()
-                .duration(2000)
+                .duration(1000)
                 .attr("r", 3);
 
             d3.select(mapRef.current)
                 .selectAll(".clusterPoint")
                 .data(clusters)
                 .transition()
-                .duration(2000)
+                .duration(1000)
                 .attr("opacity", 1);
         };
         transitionPoints();
