@@ -76,7 +76,6 @@ const checkDischarge = (patient, currentDate = DateTime.local().toISO()) => {
 const getCountryCode = (country) => {
     switch (country) {
         case "Singapore":
-            return "sg";
         case "Singapore PR":
             return "sg";
         case "Bangladesh":
@@ -91,6 +90,10 @@ const getCountryCode = (country) => {
             return "id";
         case "Philippines":
             return "ph";
+        case "Myanmar":
+            return "mm";
+        case "Japan":
+            return "jp";
         default:
             return "sg";
     }
