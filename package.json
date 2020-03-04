@@ -1,6 +1,6 @@
 {
-  "homepage": "http://ysoh286.github.io/ncovid-2019-sgp-tracker",
-  "name": "ncovid-2019-sgp-tracker",
+  "homepage": "http://ysoh286.github.io/covid-2019-sgp-tracker",
+  "name": "covid-2019-sgp-tracker",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
