@@ -3,7 +3,7 @@ import React from "react";
 const Tooltip = ({ x, y, info }) => {
     if (!info) return null;
     return (
-        <foreignObject x={x} y={y + 10} width="150" height="400">
+        <foreignObject x={x - 150 / 2} y={y + 40} width="150" height="400">
             <div className={"tooltip"}>
                 <p className={"tooltip_text"}>Case number: <b>{info.caseNumber}</b></p>
                 <p className={"tooltip_text"}>Gender: <b>{info.gender}</b></p>

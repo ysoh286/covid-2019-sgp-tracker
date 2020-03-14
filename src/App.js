@@ -5,13 +5,13 @@ import './App.css';
 import Map from "./components/Map";
 
 import * as d3 from "d3";
-import csvData from "./data/ncovid-2019-sgp.csv";
+import csvData from "./data/covid-2019-automated.csv";
 import { processData, getNumberOfCases, getNumberOfDischarged, getDatesAndDuration } from "./helpers/getData";
 import NationalityTally from './components/NationalityTally';
 import LoadingWrapper from "./components/LoadingWrapper";
 import AgeBars from './components/AgeBars';
 
-const title = "NCOVID-2019 - SGP";
+const title = "COVID-2019 - SGP";
 
 const App = () => {
 

@@ -1,27 +1,23 @@
 import { DateTime } from "luxon";
 import { maxBy } from "lodash";
 
+// load countries / iso2 json - from http://country.io/names.json
+const countriesISO2JSON = require("../data/country-ISO2.json");
+
 const processData = (rawData) => {
     const processedData = rawData.map(d => {
         return {
             ...d,
             caseNumber: parseInt(d.CASE_NUMBER),
-            confirmedDate: DateTime.fromFormat(d.CONFIRMED_DATE, "d-MMM-yy").toISODate(),
-            dischargeDate: DateTime.fromFormat(d.DISCHARGE_DATE, "d-MMM-yy").toISODate(),
+            confirmedDate: DateTime.fromFormat(d.CONFIRMED_DATE, "d MMMM yy").toISODate(),
+            dischargeDate: DateTime.fromFormat(d.DISCHARGE_DATE, "d MMMM yy").toISODate(),
             age: parseInt(d.AGE),
-            posLocationCoord: splitCoordinates(d.POS_LOCATION_COORD),
+            posLocationCoord: [d.POS_LOCATION_LAT, d.POS_LOCATION_LONG],
         };
     });
 
     return processedData;
 }
-
-// split geolocation coordinates as string into arr of numbers
-const splitCoordinates = (coordinates) => {
-    const coordArr = coordinates.split(",")
-        .map(l => l ? parseFloat(l) : undefined);
-    return coordArr;
-};
 
 // get number of confirmed cases reported
 const getNumberOfCases = (data) => data.length;
@@ -53,12 +49,13 @@ const getClusterLocations = (data) => {
         const caseCount = data.filter(d => d.CLUSTER_LOCATION_ID === l).length;
         const { CLUSTER_LOCATION_NAME,
             CLUSTER_LOCATION_ID,
-            CLUSTER_LOCATION_COORD } = singleCase;
+            CLUSTER_LOCATION_LAT,
+            CLUSTER_LOCATION_LONG } = singleCase;
         return {
             name: CLUSTER_LOCATION_NAME,
             id: CLUSTER_LOCATION_ID,
             caseCount,
-            clusterCoord: splitCoordinates(CLUSTER_LOCATION_COORD),
+            clusterCoord: [CLUSTER_LOCATION_LAT, CLUSTER_LOCATION_LONG],
         };
     })
 };
@@ -74,29 +71,9 @@ const checkDischarge = (patient, currentDate = DateTime.local().toISO()) => {
 };
 
 const getCountryCode = (country) => {
-    switch (country) {
-        case "Singapore":
-        case "Singapore PR":
-            return "sg";
-        case "Bangladesh":
-            return "bd";
-        case "China":
-            return "cn";
-        case "India":
-            return "in";
-        case "Malaysia":
-            return "my";
-        case "Indonesia":
-            return "id";
-        case "Philippines":
-            return "ph";
-        case "Myanmar":
-            return "mm";
-        case "Japan":
-            return "jp";
-        default:
-            return "sg";
-    }
+    if (country === "Singapore PR") return "sg";
+    const ind = Object.values(countriesISO2JSON).findIndex(d => d.includes(country));
+    return Object.keys(countriesISO2JSON)[ind];
 }
 
 // calcualte number of days from patient zero
