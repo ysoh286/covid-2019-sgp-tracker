@@ -5,7 +5,7 @@ import { getClusterLocations, checkDischarge } from "../helpers/getData";
 
 const geoJSON = require("../data/national-map-polygon-geojson.json");
 
-const WIDTH = 550;
+const WIDTH = 575;
 const HEIGHT = 450;
 
 export const COLOURS = {

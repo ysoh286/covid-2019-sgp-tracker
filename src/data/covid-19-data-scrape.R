@@ -11,17 +11,20 @@ library(httr)
 
 ## get case table from wikipedia page!
 getHTMLCaseTableWiki <- function() {
+  print("BEGIN TABLE WEBSCRAPE...")
   url <- "https://en.wikipedia.org/wiki/Template:2019%E2%80%9320_coronavirus_outbreak_data/Singapore_medical_cases"
   
   webpage <- read_html(url)
   
   table <- html_nodes(webpage, ".wikitable")
   df <- as.data.frame(table %>% html_table(fill = TRUE))
+  print("COMPLETE TABLE WEBSCAPE")
   return (df)
 }
 
 ## organise table data into DF
 organiseDFFromTable <- function(df) {
+  print("BEGINNING TABLE TO DF PROCESS...")
   ## there probably is a more efficient way of doing all the regex ...
   new_df <- df %>%
     mutate(place_of_stay = gsub("^.* at ", "" ,Place.of.stay),
@@ -54,6 +57,7 @@ organiseDFFromTable <- function(df) {
            CLUSTER_LOCATION_NAME = cluster_relation,
            HOSPITAL_ADMITTED = Hospital.admitted.to,
            BEEN_TO_HIGHLY_AFFECTED_AREAS = Been.to.highly.affected.areas.notes.2.)
+  print("PROCESSING NEW_DF COMPLETE.")
   return(new_df)
 }
 
@@ -70,7 +74,6 @@ testOneMapGeocodeAPI <- function() {
 
 ## GET GEOCODE from address / place 
 getGeoCode <- function(address) {
-  print(address)
   ## convert address into capital letters, and anything after the comma
   upperAddress <- toupper(gsub(",.*", "", address))
   
@@ -99,7 +102,8 @@ getGeoCode <- function(address) {
 }
 
 ## get geocodes for each case's place of stay
-getPOSGeocodes <- function() {
+getPOSGeocodes <- function(new_df) {
+  print("BEGINNING POS GEOCODING...")
   pos <- new_df$PLACE_OF_STAY
   geoList <- sapply(pos, getGeoCode)
   
@@ -110,12 +114,14 @@ getPOSGeocodes <- function() {
            POS_LOCATION_LONG = V3) %>%
     mutate(CASE_NUMBER = as.character(1:n()))
   
+  print("RETURNING GEO_POS_DF")
   return(geo_pos_df)
 }
 
 ## get cluster geocodes 
 getClusterGeocodes <- function(new_df) {
   ## determine cluster locations 
+    print("BEGINNING CLUSTER GEOCODING...")
   clusterLocations <- new_df$CLUSTER_LOCATION_NAME
   geoClusterList <- sapply(clusterLocations, getGeoCode)
   
@@ -129,6 +135,7 @@ getClusterGeocodes <- function(new_df) {
                                         group_indices(., 
                                                       CLUSTER_LOCATION_LAT,
                                                       CLUSTER_LOCATION_LONG)))
+  print("RETURNING GEO_CLUSTER_DF")
   return(geo_cluster_df)
 }
 
@@ -146,6 +153,7 @@ generateCSV <- function() {
     full_join(geo_cluster_df, by = "CASE_NUMBER")
   
   write.csv(joined_df, "covid-2019-sgp-tracker/src/data/covid-2019-automated.csv")
+  print("DATA SCRAPING PROCESS COMPLETE.")
 }
 
 ## run!
