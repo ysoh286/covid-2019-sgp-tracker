@@ -152,7 +152,7 @@ generateCSV <- function() {
   joined_df <- new_df %>% full_join(geo_pos_df, by = "CASE_NUMBER") %>% 
     full_join(geo_cluster_df, by = "CASE_NUMBER")
   
-  write.csv(joined_df, "covid-2019-sgp-tracker/src/data/covid-2019-automated.csv")
+  write.csv(joined_df, "src/data/covid-2019-automated.csv")
   print("DATA SCRAPING PROCESS COMPLETE.")
 }
 
