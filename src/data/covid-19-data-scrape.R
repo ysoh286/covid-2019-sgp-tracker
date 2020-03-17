@@ -27,7 +27,7 @@ organiseDFFromTable <- function(df) {
   print("BEGINNING TABLE TO DF PROCESS...")
   ## there probably is a more efficient way of doing all the regex ...
   new_df <- df %>%
-    mutate(place_of_stay = gsub("^.* at ", "" ,Place.of.stay),
+    mutate(place_of_stay = gsub("^.* at ", "" ,Place.of.stay.Home),
            cluster_relation = ifelse(str_detect(Case.relation.notes.1., 
                                                 "Related to cases at "), 
                                      gsub("^.*Related to cases at ",
