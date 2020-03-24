@@ -28,6 +28,10 @@ const getNumberOfDischarged = (data) => {
     return data.filter(d => checkDischarge(d, latest)).length;
 }
 
+const getNumberOfDeaths = (data) => data.filter(d => d.DEATH_DATE !== "NA").length;
+
+const getNumberOfImportedCases = data => data.filter(d => d.IMPORTED === "TRUE").length;
+
 // get the breakdown by nationality
 const getNationalitySummary = (data) => {
     const allNationalities = [...new Set(data.map(d => d.NATIONALITY))];
@@ -166,6 +170,9 @@ export {
     processData,
     getNumberOfCases,
     getNumberOfDischarged,
+    getNumberOfDeaths,
+    getNumberOfImportedCases,
+
     checkDischarge,
 
     getNationalitySummary,

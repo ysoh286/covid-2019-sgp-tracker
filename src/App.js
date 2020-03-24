@@ -6,7 +6,10 @@ import Map from "./components/Map";
 
 import * as d3 from "d3";
 import csvData from "./data/covid-2019-automated.csv";
-import { processData, getNumberOfCases, getNumberOfDischarged, getDatesAndDuration } from "./helpers/getData";
+import {
+  processData, getNumberOfCases, getNumberOfDischarged,
+  getDatesAndDuration, getNumberOfDeaths, getNumberOfImportedCases
+} from "./helpers/getData";
 import NationalityTally from './components/NationalityTally';
 import LoadingWrapper from "./components/LoadingWrapper";
 import AgeBars from './components/AgeBars';
@@ -77,7 +80,9 @@ const App = () => {
   const filteredData = data.filter(d => DateTime.fromISO(d.confirmedDate).toMillis() <= date);
 
   const discharged = getNumberOfDischarged(filteredData);
+  const deaths = getNumberOfDeaths(filteredData);
   const cases = getNumberOfCases(filteredData);
+  const imported = getNumberOfImportedCases(filteredData);
 
   // change slider
   const onChangeSlider = (e) => {
@@ -117,9 +122,10 @@ const App = () => {
               <div className="caseText">
                 <h2 className={"date"}>{DateTime.fromISO(filteredData[filteredData.length - 1].confirmedDate).toFormat("dd MMM yy")}</h2>
                 <h3 className={"cases"}>Cases: {cases}</h3>
-                <h3 className={"treatment"}>In treatment: {cases - discharged}</h3>
+                <h3 className={"treatment"}>In treatment: {cases - discharged - deaths}</h3>
                 <h3 className={"discharged"}>Discharged: {discharged}</h3>
-                <h3 className="deaths">Deaths: 0</h3>
+                <h3 className="deaths">Deaths: {deaths}</h3>
+                <h3> {imported} imported ({Math.round(imported / cases * 100)}%) </h3>
               </div>
               <NationalityTally data={filteredData} />
               <AgeBars data={filteredData} />

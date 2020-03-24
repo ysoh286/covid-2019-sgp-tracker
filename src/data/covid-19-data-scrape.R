@@ -27,13 +27,19 @@ organiseDFFromTable <- function(df) {
   print("BEGINNING TABLE TO DF PROCESS...")
   ## there probably is a more efficient way of doing all the regex ...
   new_df <- df %>%
-    mutate(place_of_stay = gsub("^.* at ", "" ,Place.of.stay.Home),
+    mutate(place_of_stay = gsub("^.* at ", "" ,Place.of.stay.Home.Travel.history),
            cluster_relation = ifelse(str_detect(Case.relation.notes.1., 
                                                 "Related to cases at "), 
                                      gsub("^.*Related to cases at ",
                                           "", 
                                           Case.relation.notes.1.), 
-                                     NA)) %>% 
+                                     NA),
+           IMPORTED = str_detect(Case.relation.notes.1., "Imported"),
+           UNTRACED = str_detect(Case.relation.notes.1., "Untraced"),
+           DISCHARGE_DATE = ifelse(str_detect(Outcome, "Discharged on"),
+                               gsub("^.*Discharged on ", "", Outcome), NA),
+           DEATH_DATE = ifelse(str_detect(Outcome, "Passed away on"),
+                         gsub("Passed away on |,.*$", "", Outcome), NA)) %>% 
     mutate(place_of_stay = gsub("^.*Home in", "", place_of_stay),
            cluster_relation = gsub("Family member of.*", 
                                    "", 
@@ -48,14 +54,13 @@ organiseDFFromTable <- function(df) {
     mutate(place_of_stay = na_if(place_of_stay, "-")) %>%
     rename(CASE_NUMBER = Case,
            CONFIRMED_DATE = Date.announced,
-           DISCHARGE_DATE = Date.discharged,
            AGE = Age,
            GENDER = Gender,
            NATIONALITY = Nationality,
            CASE_RELATION_NOTES = `Case.relation.notes.1.`,
            PLACE_OF_STAY = place_of_stay,
            CLUSTER_LOCATION_NAME = cluster_relation,
-           HOSPITAL_ADMITTED = Hospital.admitted.to,
+           HOSPITAL_ADMITTED = Hospitals.visited,
            BEEN_TO_HIGHLY_AFFECTED_AREAS = Been.to.highly.affected.areas.notes.2.)
   print("PROCESSING NEW_DF COMPLETE.")
   return(new_df)
@@ -120,6 +125,28 @@ getPOSGeocodes <- function(new_df) {
 
 ## get cluster geocodes 
 getClusterGeocodes <- function(new_df) {
+
+  ## cluster locations that can't be found from API
+  # otherClusterLocations = c("Yong Thai Hang", "The Life Church and Missions Singapore", 
+  #                           "the Grace Assembly of God churches",
+  #                           "Wizlearn Technologies Pte Ltd", "boulder+ Gym")
+  
+  # otherClusterLocationAddresses = c("24 CAVAN ROAD", "146B PAYA LEBAR ROAD", "355 TANGLIN ROAD", 
+  # "10 SCIENCE PARK ROAD", "12 KALLANG AVE")
+
+  # otherClusterList <- sapply(otherClusterLocationAddresses, getGeoCode)
+  # print(otherClusterList)
+  # print(as.tibble(t(otherClusterList)))
+  
+  # other_clusters_df <- as.tibble(t(otherClusterList)) %>%
+  #                      rename(CLUSTER_address_query = V1, 
+  #                             CLUSTER_LOCATION_LAT = V2, 
+  #                             CLUSTER_LOCATION_LONG = V3) %>%
+  #                      mutate(CLUSTER_LOCATION_NAME = otherClusterLocations)
+  
+  # print(other_clusters_df)
+
+
   ## determine cluster locations 
     print("BEGINNING CLUSTER GEOCODING...")
   clusterLocations <- new_df$CLUSTER_LOCATION_NAME
@@ -135,6 +162,7 @@ getClusterGeocodes <- function(new_df) {
                                         group_indices(., 
                                                       CLUSTER_LOCATION_LAT,
                                                       CLUSTER_LOCATION_LONG)))
+    
   print("RETURNING GEO_CLUSTER_DF")
   return(geo_cluster_df)
 }

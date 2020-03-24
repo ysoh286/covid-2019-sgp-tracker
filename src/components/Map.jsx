@@ -14,24 +14,38 @@ export const COLOURS = {
     dead: "black",
 };
 
+const STATUS_LABEL = {
+    discharged: "Discharged",
+    dead: "Passed away",
+    treated: "In treatment",
+};
+
+const getStatus = (patient, data) => {
+
+    const isDischarged = checkDischarge(patient, data[data.length - 1].confirmedDate);
+    if (isDischarged) return "discharged";
+    const isDead = patient.DEATH_DATE !== "NA";
+    if (isDead) return "dead";
+    return "treated";
+};
+
 // get points of stay -
 const getPoints = (data) => {
     const points = data.map(d => {
         const [lat, long] = d.posLocationCoord;
-        const isDischarged = checkDischarge(d, data[data.length - 1].confirmedDate);
+        const status = getStatus(d, data);
         return {
             caseNumber: d.CASE_NUMBER,
             gender: d.GENDER,
             age: d.AGE,
             nationality: d.NATIONALITY,
             clusterGroup: d.CLUSTER_LOCATION_NAME,
-            status:  isDischarged ? 
-            "Discharged" : "In treatment",
+            status: STATUS_LABEL[status],
             key: d.CASE_NUMBER,
             name: d.PLACE_OF_STAY ? d.PLACE_OF_STAY : "Unknown",
             lat,
             long,
-            colour: isDischarged ? COLOURS.discharged : COLOURS.treated,
+            colour: COLOURS[status],
         };
     });
     return points;
@@ -80,7 +94,7 @@ const Map = ({ data }) => {
     // for annotating points of cluster location
     const clusterData = getClusterLocations(data);
     const clusters = getCluster(clusterData);
-    const clusterPoints = clusters.map(c => <path  d="
+    const clusterPoints = clusters.map(c => <path d="
     M 0.000 3.000
     L 2.939 4.045
     L 2.853 0.927
@@ -93,11 +107,11 @@ const Map = ({ data }) => {
     L -2.939 4.045
     L 0.000 3.000
     "
-    transform={`translate(${projection([c.long, c.lat])[0] || 10}, 
+        transform={`translate(${projection([c.long, c.lat])[0] || 10}, 
     ${projection([c.long, c.lat])[1] || 10})`}
-    className={"clusterPoint"}
-    key={c.key}
-    fill={"none"} stroke={"purple"} opacity={0} />);
+        className={"clusterPoint"}
+        key={c.key}
+        fill={"none"} stroke={"purple"} opacity={0} />);
 
     // update circles when data changes
 
