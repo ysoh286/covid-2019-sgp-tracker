@@ -6,7 +6,7 @@ import { getClusterLocations, checkDischarge } from "../helpers/getData";
 const geoJSON = require("../data/national-map-polygon-geojson.json");
 
 const WIDTH = 575;
-const HEIGHT = 450;
+const HEIGHT = 500;
 
 export const COLOURS = {
     discharged: "#37db63",
@@ -32,7 +32,12 @@ const getStatus = (patient, data) => {
 // get points of stay -
 const getPoints = (data) => {
     const points = data.map(d => {
-        const [lat, long] = d.posLocationCoord;
+        let [lat, long] = d.posLocationCoord;
+        // if pos location is unknown, try cluster coordinates
+        if (lat === "NA" && long === "NA") {
+            lat = d.CLUSTER_LOCATION_LAT;
+            long = d.CLUSTER_LOCATION_LONG;
+        }
         const status = getStatus(d, data);
         return {
             caseNumber: d.CASE_NUMBER,
@@ -88,30 +93,45 @@ const Map = ({ data }) => {
     const circles = points.map(p => <circle key={p.key}
         className={"circle"}
         fill={p.colour}
-        onMouseOver={() => setTooltip(p)}
+        onMouseOver={() => setTooltip({
+            case_number: p.caseNumber,
+            gender: p.gender,
+            status: p.status,
+            place_of_stay: p.name,
+            cluster_relation: p.clusterGroup,
+            lat: p.lat,
+            long: p.long,
+        })}
         onMouseOut={() => setTooltip(false)} />);
 
     // for annotating points of cluster location
     const clusterData = getClusterLocations(data);
     const clusters = getCluster(clusterData);
     const clusterPoints = clusters.map(c => <path d="
-    M 0.000 3.000
-    L 2.939 4.045
-    L 2.853 0.927
-    L 4.755 -1.545
-    L 1.763 -2.427
-    L 0.000 -5.000
-    L -1.763 -2.427
-    L -4.755 -1.545
-    L -2.853 0.927
-    L -2.939 4.045
-    L 0.000 3.000
+    M 0.000 2.000
+    L 2.351 3.236
+    L 1.902 0.618
+    L 3.804 -1.236
+    L 1.176 -1.618
+    L 0.000 -4.000
+    L -1.176 -1.618
+    L -3.804 -1.236
+    L -1.902 0.618
+    L -2.351 3.236
+    L 0.000 2.000
     "
         transform={`translate(${projection([c.long, c.lat])[0] || 10}, 
     ${projection([c.long, c.lat])[1] || 10})`}
         className={"clusterPoint"}
         key={c.key}
-        fill={"none"} stroke={"purple"} opacity={0} />);
+        onMouseOver={() => setTooltip({
+            cluster_name: c.name,
+            number_of_related_cases: c.caseCount,
+            lat: c.lat,
+            long: c.long
+        })}
+        onMouseOut={() => setTooltip(false)}
+        fill={"purple"} stroke={"indigo"} opacity={0} />);
 
     // update circles when data changes
 
@@ -122,11 +142,11 @@ const Map = ({ data }) => {
             d3.select(mapRef.current)
                 .selectAll("circle")
                 .data(getPoints(data))
-                .attr("cx", d => projection([d.long, d.lat])[0] + Math.random() * 3 || 10)
-                .attr("cy", d => projection([d.long, d.lat])[1] + Math.random() * 3 || 10)
+                .attr("cx", d => projection([d.long, d.lat])[0] + Math.random() * 3 || 420 + Math.random() * 150)
+                .attr("cy", d => projection([d.long, d.lat])[1] + Math.random() * 3 || 300 + Math.random() * 150)
                 .transition()
                 .duration(1000)
-                .attr("r", 3);
+                .attr("r", 2.5);
 
             d3.select(mapRef.current)
                 .selectAll(".clusterPoint")
@@ -148,8 +168,8 @@ const Map = ({ data }) => {
                 {circles}
                 {clusterPoints}
             </g>
-            <Tooltip x={projection([tooltip.long, tooltip.lat])[0] || 10}
-                y={projection([tooltip.long, tooltip.lat])[1] || 10} info={tooltip} />
+            <Tooltip x={projection([tooltip.long, tooltip.lat])[0] || 250}
+                y={projection([tooltip.long, tooltip.lat])[1] || 300} info={tooltip} />
         </svg>
     );
 

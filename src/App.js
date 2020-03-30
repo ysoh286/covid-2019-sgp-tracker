@@ -132,8 +132,9 @@ const App = () => {
             </div>
             <div className={"footer"}>
               <div>
-                Points on the map are rough estimates of locations and may not be exact. <br />
-                Points that do not have a place of stay / or unknown are located on the top left.
+                Points on the map are rough estimates of locations and may not be exact. Points are either based upon
+                place of stay / home or a cluster location. <br />
+                Points that do not have a place of stay / or unknown and have no cluster relation are located on the bottom right 'square'.
               </div>
               This is still under construction / a work in progress.
               Created by a concerned human.
