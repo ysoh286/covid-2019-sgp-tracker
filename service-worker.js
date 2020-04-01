@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/covid-2019-sgp-tracker/precache-manifest.5dda9bc6da414316e0951e6a675932dc.js"
+  "/covid-2019-sgp-tracker/precache-manifest.9c7a2f491035b428eafca6cee70069bd.js"
 );
 
 self.addEventListener('message', (event) => {
