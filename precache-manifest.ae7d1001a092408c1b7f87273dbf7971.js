@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2cac0221afcf7eb7eb3666b00ee955bc",
+    "revision": "03a72199180420adca6af1cadef1493f",
     "url": "/covid-2019-sgp-tracker/index.html"
   },
   {
-    "revision": "f784fccb69a67fb1acbf",
+    "revision": "b19491c0c169d36deb67",
     "url": "/covid-2019-sgp-tracker/static/css/main.50657a10.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/covid-2019-sgp-tracker/static/js/2.8d361426.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "f784fccb69a67fb1acbf",
-    "url": "/covid-2019-sgp-tracker/static/js/main.5369375e.chunk.js"
+    "revision": "b19491c0c169d36deb67",
+    "url": "/covid-2019-sgp-tracker/static/js/main.f1b03c08.chunk.js"
   },
   {
     "revision": "c94544b9a184a4475353",
@@ -28,7 +28,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/covid-2019-sgp-tracker/static/media/coronavirus-artwork.b71c98e4.jpg"
   },
   {
-    "revision": "c8a6026b49f4a96a983d777bacfdd75c",
-    "url": "/covid-2019-sgp-tracker/static/media/covid-2019-automated.c8a6026b.csv"
+    "revision": "689ef3b00116e5a6a504f6c6cd76e813",
+    "url": "/covid-2019-sgp-tracker/static/media/covid-2019-automated.689ef3b0.csv"
   }
 ]);
