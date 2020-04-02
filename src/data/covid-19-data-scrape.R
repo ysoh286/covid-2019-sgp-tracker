@@ -51,7 +51,7 @@ organiseDFFromTable <- function(df) {
                                    "", 
                                    cluster_relation)) %>%
     slice(1:(n() - 1)) %>%
-    mutate(place_of_stay = na_if(place_of_stay, "-")) %>%
+    mutate(place_of_stay = na_if(na_if(place_of_stay, "-"), "(Pending)")) %>%
     rename(CASE_NUMBER = Case,
            CONFIRMED_DATE = Date.announced,
            AGE = Age,

@@ -83,6 +83,10 @@ const App = () => {
   const deaths = getNumberOfDeaths(filteredData);
   const cases = getNumberOfCases(filteredData);
   const imported = getNumberOfImportedCases(filteredData);
+  // cases where they are both imported, but there is an unknown location / or most likely visited overseas.
+  console.log("filteredData", filteredData);
+  const filteredImports = filteredData.filter(d => (d.IMPORTED === "TRUE" || d.UNTRACED === "TRUE")
+    && d.POS_LOCATION_LAT === "NA").length;
 
   // change slider
   const onChangeSlider = (e) => {
@@ -134,7 +138,9 @@ const App = () => {
               <div>
                 Points on the map are rough estimates of locations and may not be exact. Points are either based upon
                 place of stay / home or a cluster location. <br />
-                Points that do not have a place of stay / or unknown and have no cluster relation are located on the bottom right 'square'.
+                Many cases are imported and stem from recent visits from other countries / overseas, and do not have a defined place of stay.
+                These have not been plotted - about {filteredImports} cases fall under this category.
+                The remaining points that do not have a place of stay / or unknown and have no cluster relation are located on the bottom right 'square'.
               </div>
               This is still under construction / a work in progress.
               Created by a concerned human.

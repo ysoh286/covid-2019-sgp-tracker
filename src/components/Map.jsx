@@ -31,7 +31,11 @@ const getStatus = (patient, data) => {
 
 // get points of stay -
 const getPoints = (data) => {
-    const points = data.map(d => {
+    // filter out all cases that are imported / and do not have a POS or a CLUSTER
+    const nonImports = data.filter(d => !((d.IMPORTED === "TRUE" || d.UNTRACED === "TRUE")
+        && d.posLocationCoord[0] === "NA"
+        && d.CLUSTER_LOCATION_LAT === "NA"));
+    const points = nonImports.map(d => {
         let [lat, long] = d.posLocationCoord;
         // if pos location is unknown, try cluster coordinates
         if (lat === "NA" && long === "NA") {
