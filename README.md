@@ -4,6 +4,8 @@
 
 To view this, visit https://ysoh286.github.io/covid-2019-sgp-tracker/
 
+NOTE: Deprecated and no longer up to date due to data source lost and explosion of cases in SGP.
+
 - Created with CRA, built with React + D3.
 
 To run locally, clone this repo and run:
